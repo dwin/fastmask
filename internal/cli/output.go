@@ -11,9 +11,3 @@ func writeOutput(o interface{}) error {
 	// nolint:errcheck,wrapcheck // ignore error, we are writing to stdout
 	return encoder.Encode(o)
 }
-
-func writeError(err error) error {
-	return writeOutput(map[string]interface{}{
-		"error": err.Error(),
-	})
-}

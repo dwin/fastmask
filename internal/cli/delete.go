@@ -6,8 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dwin/fastmask/pkg/fastmail"
 	"github.com/spf13/cobra"
+
+	"github.com/dwin/fastmask/pkg/fastmail"
 )
 
 func (f *fastmask) loadDeleteCmd() *cobra.Command {
@@ -45,7 +46,7 @@ func confirmDelete(cmd *cobra.Command, _ []string) error {
 		return nil
 	}
 
-	fmt.Println("Deletion cancelled.")
+	fmt.Println("Deletion canceled.")
 	os.Exit(0)
 
 	return nil

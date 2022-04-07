@@ -41,11 +41,11 @@ func (c *Client) CreateMaskedEmail(ctx context.Context, maskedEmail *MaskedEmail
 	}
 	// nolint:gomnd // ignore here.
 	if len(res.MethodResponses) != 1 {
-		return nil, fmt.Errorf("expected 1 method response, got %d", len(res.MethodResponses))
+		return nil, MethodResponseError{len(res.MethodResponses), 1}
 	}
 	// nolint:gomnd // ignore here.
 	if len(res.MethodResponses[0]) != 3 {
-		return nil, fmt.Errorf("expected 3 method response items, got %d", len(res.MethodResponses[0]))
+		return nil, MethodResponseError{len(res.MethodResponses[0]), 3}
 	}
 
 	var payload MethodResponseMaskedEmailSet

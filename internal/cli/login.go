@@ -4,8 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/dwin/fastmask/pkg/fastmail"
 	"github.com/spf13/cobra"
+
+	"github.com/dwin/fastmask/pkg/fastmail"
 )
 
 var errAccountIDNotFound = errors.New("no account ID found in response")

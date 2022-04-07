@@ -3,8 +3,9 @@ package cli
 import (
 	"fmt"
 
-	"github.com/dwin/fastmask/pkg/fastmail"
 	"github.com/spf13/cobra"
+
+	"github.com/dwin/fastmask/pkg/fastmail"
 )
 
 const (
@@ -55,6 +56,7 @@ func (f *fastmask) runCreate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		if reauthNeeded(err) {
 			fmt.Println("🛑 Authentication failed. Please run 'fastmask auth'.")
+
 			return nil
 		}
 

@@ -25,7 +25,7 @@ linters-settings:
     min-confidence: 0.5
 
   gocyclo:
-    min-complexity: 20
+    min-complexity: 15
 
   maligned:
     # print struct with more effective memory layout or not, false by default
@@ -78,3 +78,5 @@ linters:
     - exhaustivestruct
     - varnamelen
     - nolintlint
+    - gci
+    - forbidigo

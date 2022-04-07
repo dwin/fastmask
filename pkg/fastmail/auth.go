@@ -1,13 +1,9 @@
 package fastmail
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
-	"net/http/cookiejar"
 )
 
 type AuthResponse struct {
@@ -66,6 +62,16 @@ type AuthFlowMessage struct {
 	Value          string       `json:"value,omitempty"`
 }
 
+func (a *AuthFlowMessage) TOTPRequired() bool {
+	for i := range a.Methods {
+		if a.Methods[i].Type == "totp" {
+			return true
+		}
+	}
+
+	return false
+}
+
 type AuthMethod struct {
 	Type         string `json:"type"`
 	PhoneNumbers []struct {
@@ -78,138 +84,66 @@ type AuthMethod struct {
 // LoginUsernamePasswordMFA authenticates with the given username and password, mfaCode is optional
 // based on account settings.
 func (c *Client) LoginUsernamePasswordMFA(ctx context.Context, username, password, mfaCode string) (*AuthResponse, error) {
-	cookieJar, err := cookiejar.New(nil)
-	if err != nil {
-		return nil, fmt.Errorf("error creating cookie jar for login: %w", err)
-	}
-
-	c.httpC.Jar = cookieJar
-
 	// Send the username to get a loginId
-	usernameReqBody, err := json.Marshal(AuthenticateUsernameRequest{Username: username})
-	if err != nil {
-		return nil, fmt.Errorf("login loginId json marshal error: %w", err)
-	}
+	var loginIDResult AuthFlowMessage
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, APIAuthEndpoint, bytes.NewBuffer(usernameReqBody))
-	if err != nil {
-		return nil, fmt.Errorf("error creating loginId request: %w", err)
-	}
+	loginIDRequest := c.httpC.R().SetBody(AuthenticateUsernameRequest{Username: username})
+	loginIDRequest.SetContext(ctx)
+	loginIDRequest.SetResult(&loginIDResult)
 
-	setContentTypeHeaders(req)
-
-	resp, err := c.httpC.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("login loginId request error: %w", err)
-	}
-
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("login read loginId response error: %w", err)
-	}
-
-	resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, APIError{Msg: "Login flow get loginId failed", Status: resp.Status, Detail: string(respBody)}
-	}
-
-	var loginIDResp AuthFlowMessage
-
-	if err := json.Unmarshal(respBody, &loginIDResp); err != nil {
-		return nil, fmt.Errorf("login unmarshal loginId response error: %w", err)
+	if resp, err := loginIDRequest.Post(APIAuthEndpoint); err != nil {
+		return nil, APIError{Msg: "get loginID failed", Status: resp.Status(), Detail: resp.String()}
 	}
 
 	// Send Password
 	passwordAuthInput := AuthFlowMessage{
-		LoginID: loginIDResp.LoginID,
+		LoginID: loginIDResult.LoginID,
 		Type:    "password",
 		Value:   password,
 	}
 
-	passwordReqBody, err := json.Marshal(&passwordAuthInput)
+	var authResponse AuthResponse
+
+	passwordAuthRequest := c.httpC.R().SetBody(passwordAuthInput)
+	passwordAuthRequest.SetContext(ctx)
+	passwordAuthRequest.SetResult(&authResponse)
+
+	resp, err := passwordAuthRequest.Post(APIAuthEndpoint)
 	if err != nil {
-		return nil, fmt.Errorf("login marshal password request error: %w", err)
+		return nil, APIError{Msg: "password auth failed", Status: resp.Status(), Detail: resp.String()}
 	}
 
-	req, err = http.NewRequestWithContext(ctx, http.MethodPost, APIAuthEndpoint, bytes.NewBuffer(passwordReqBody))
-	if err != nil {
-		return nil, fmt.Errorf("login init password request error: %w", err)
+	// If access token is received then we are authenticated, otherwise check for MFA requirement.
+	if authResponse.AccessToken != "" {
+		return &authResponse, nil
 	}
 
-	setContentTypeHeaders(req)
+	var passwordAuthResult AuthFlowMessage
 
-	resp, err = c.httpC.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("login password request error: %w", err)
+	if err := json.Unmarshal(resp.Body(), &passwordAuthResult); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal auth response: %w", err)
 	}
 
-	respBody, err = io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("login password response ReadAll error: %w", err)
-	}
+	mfaIsRequired := passwordAuthResult.TOTPRequired()
 
-	resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, APIError{Msg: "Login flow send password failed", Status: resp.Status, Detail: string(respBody)}
-	}
-
-	mfaRequired := func() bool {
-		for _, method := range loginIDResp.Methods {
-			if method.Type == "totp" {
-				return true
-			}
-		}
-
-		return false
-	}()
-
-	if mfaRequired && mfaCode == "" {
+	if mfaIsRequired && mfaCode == "" {
 		return nil, ErrMFARequired
 	}
 
-	// Send MFA if required
-	if mfaRequired {
+	if mfaIsRequired {
 		mfaAuthInput := AuthFlowMessage{
-			LoginID: loginIDResp.LoginID,
+			LoginID: passwordAuthResult.LoginID,
 			Type:    "totp",
 			Value:   mfaCode,
 		}
 
-		mfaReqBody, err := json.Marshal(&mfaAuthInput)
-		if err != nil {
-			return nil, fmt.Errorf("login MFA json marshal error: %w", err)
+		mfaAuthRequest := c.httpC.R().SetBody(mfaAuthInput)
+		mfaAuthRequest.SetContext(ctx)
+		mfaAuthRequest.SetResult(&authResponse)
+
+		if resp, err := mfaAuthRequest.Post(APIAuthEndpoint); err != nil {
+			return nil, APIError{Msg: "mfa auth failed", Status: resp.Status(), Detail: resp.String()}
 		}
-
-		req, err = http.NewRequestWithContext(ctx, http.MethodPost, APIAuthEndpoint, bytes.NewBuffer(mfaReqBody))
-		if err != nil {
-			return nil, fmt.Errorf("login MFA init request error: %w", err)
-		}
-
-		setContentTypeHeaders(req)
-
-		resp, err = c.httpC.Do(req)
-		if err != nil {
-			return nil, fmt.Errorf("login MFA request error: %w", err)
-		}
-
-		respBody, err = io.ReadAll(resp.Body)
-		if err != nil {
-			return nil, fmt.Errorf("login ReadAll MFA response error: %w", err)
-		}
-
-		resp.Body.Close()
-
-		if resp.StatusCode != http.StatusCreated {
-			return nil, APIError{Msg: "Login flow send MFA failed, check MFA code", Status: resp.Status, Detail: string(respBody)}
-		}
-	}
-
-	var authResponse AuthResponse
-
-	if err := json.Unmarshal(respBody, &authResponse); err != nil {
-		return nil, fmt.Errorf("login unmarshal auth response error: %w", err)
 	}
 
 	if authResponse.AccessToken == "" {
