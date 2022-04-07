@@ -1,0 +1,19 @@
+{
+  "methods": [
+    {
+      "type": "totp"
+    },
+    {
+      "phoneNumbers": [
+        {
+          "number": "+1 2XX XXX XX89",
+          "id": "1234567",
+          "isCodeSent": false
+        }
+      ],
+      "type": "sms"
+    }
+  ],
+  "loginId": "testtb70tXyuVFgYTq7C5tH9lkoB0nYb",
+  "mayTrustDevice": true
+}

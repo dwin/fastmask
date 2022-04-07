@@ -1,0 +1,80 @@
+
+
+run:
+  go: '1.17' # not using generics. https://github.com/golangci/golangci-lint/issues/2649
+
+linters-settings:
+  # report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(numStr)`;
+  check-blank: true
+
+  funlen:
+    lines: 140
+    statements: 100
+
+  lll:
+    # max line length, lines longer will be reported. Default is 120.
+    # '\t' is counted as 1 character by default, and can be changed with the tab-width option
+    line-length: 160
+    # tab width in spaces. Default to 1.
+    tab-width: 1
+
+  govet:
+    check-shadowing: false
+
+  golint:
+    min-confidence: 0.5
+
+  gocyclo:
+    min-complexity: 20
+
+  maligned:
+    # print struct with more effective memory layout or not, false by default
+    suggest-new: true
+
+  dupl:
+    threshold: 100
+
+  goconst:
+    # minimal length of string constant, 3 by default
+    min-len: 3
+    # minimal occurrences count to trigger, 3 by default
+    min-occurrences: 3
+
+  misspell:
+    # Correct spellings using locale preferences for US or UK.
+    # Default is to use a neutral variety of English.
+    # Setting locale to US will correct the British spelling of 'colour' to 'color'.
+    locale: US
+    ignore-words:
+      - dwin
+
+  nakedret:
+    # make an issue if func has more lines of code than this setting and it has naked returns; default is 30
+    max-func-lines: 30
+
+
+  goimports:
+    # put imports beginning with prefix after 3rd-party packages;
+    # it's a comma-separated list of prefixes
+    local-prefixes: github.com/dwin
+
+  gocritic:
+    enabled-tags:
+      - performance
+      - style
+      - experimental
+    disabled-checks:
+      - wrapperFunc
+      - whyNoLint
+
+linters:
+  enable-all: true
+  disable:
+    - tagliatelle
+    - gochecknoglobals
+    - testpackage
+    - paralleltest
+    - maligned
+    - exhaustivestruct
+    - varnamelen
+    - nolintlint

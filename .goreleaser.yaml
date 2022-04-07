@@ -1,0 +1,50 @@
+# Documentation at https://goreleaser.com
+project_name: fastmask
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+
+builds:
+  - binary: fastmask
+    main: ./cmd/fastmask/main.go
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    # Default ldflags is `-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser`.
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - '6'
+      - '7'
+
+universal_binaries:
+- replace: true
+
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      amd64: x86_64
+      arm64: arm64
+      all: universal
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-dev"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'

@@ -1,0 +1,20 @@
+{
+  "using": [
+    "urn:ietf:params:jmap:core",
+    "https://www.fastmail.com/dev/maskedemail"
+  ],
+  "methodCalls": [
+    [
+      "MaskedEmail/set",
+      {
+        "accountId": "abc123",
+        "create": {
+          "fastmask": {
+            "forDomain": "www.facebook.com"
+          }
+        }
+      },
+      "0"
+    ]
+  ]
+}
