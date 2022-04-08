@@ -12,6 +12,7 @@ Quickly create [Fastmail](https://fastmail.com) Masked Email addresses. It inclu
 >
 > More info: [https://www.fastmail.help/hc/en-us/articles/4406536368911-Masked-Email](https://www.fastmail.help/hc/en-us/articles/4406536368911-Masked-Email)
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/dwin/fastmask.svg)](https://pkg.go.dev/github.com/dwin/fastmask)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dwin/fastmask)](https://goreportcard.com/report/github.com/dwin/fastmask)
 [![codecov](https://codecov.io/gh/dwin/fastmask/branch/main/graph/badge.svg?token=Co4xYYdgVV)](https://codecov.io/gh/dwin/fastmask)
 
