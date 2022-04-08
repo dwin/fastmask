@@ -4,8 +4,10 @@ go 1.18
 
 require (
 	github.com/MakeNowJust/heredoc/v2 v2.0.1
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
+	github.com/jarcoal/httpmock v1.1.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.4.3
 	github.com/spf13/cobra v1.4.0
@@ -15,7 +17,6 @@ require (
 
 require (
 	github.com/corpix/uarand v0.1.1 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect

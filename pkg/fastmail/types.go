@@ -3,20 +3,7 @@ package fastmail
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 )
-
-type MaskedEmail struct {
-	ID            string     `json:"id,omitempty" mapstructure:"id"`
-	State         string     `json:"state,omitempty" mapstructure:"state"`
-	Email         string     `json:"email,omitempty" mapstructure:"email"`
-	Description   string     `json:"description,omitempty" mapstructure:"description"`
-	ForDomain     string     `json:"forDomain,omitempty" mapstructure:"forDomain"`
-	URL           string     `json:"url,omitempty" mapstructure:"url"`
-	CreatedBy     string     `json:"createdBy,omitempty" mapstructure:"createdBy"`
-	CreatedAt     *time.Time `json:"createdAt,omitempty" mapstructure:"createdAt"`
-	LastMessageAt *time.Time `json:"lastMessageAt,omitempty" mapstructure:"lastMessageAt"`
-}
 
 type JMAPRequest struct {
 	Using       []string     `json:"using,omitempty"`
@@ -24,9 +11,9 @@ type JMAPRequest struct {
 }
 
 type JMAPResponse struct {
-	LatestClientVersion string          `json:"latestClientVersion,omitempty"`
-	MethodResponses     [][]interface{} `json:"methodResponses,omitempty"`
-	SessionState        string          `json:"sessionState,omitempty"`
+	LatestClientVersion string           `json:"latestClientVersion,omitempty"`
+	MethodResponses     []MethodResponse `json:"methodResponses,omitempty"`
+	SessionState        string           `json:"sessionState,omitempty"`
 }
 
 type MethodCall struct {
@@ -34,6 +21,8 @@ type MethodCall struct {
 	Payload interface{}
 	ID      string
 }
+
+type MethodResponse [3]interface{}
 
 // MarshalJSON marshals a MethodCall into the format needed by the Fastmail API
 // eg. ["MaskedEmail/set", {...}, "0"].
@@ -50,7 +39,7 @@ func (m *MethodCall) UnmarshalJSON(b []byte) error {
 	var v [3]interface{}
 
 	if err := json.Unmarshal(b, &v); err != nil {
-		return fmt.Errorf("unmarshal method call response: %w", err)
+		return fmt.Errorf("unmarshal method call to interface error: %w", err)
 	}
 
 	name, ok := v[0].(string)
@@ -69,12 +58,12 @@ func (m *MethodCall) UnmarshalJSON(b []byte) error {
 }
 
 type MethodResponseMaskedEmailSet struct {
-	AccountID string                 `mapstructure:"accountId"`
-	Created   map[string]MaskedEmail `mapstructure:"created"`
-	Updated   map[string]interface{} `mapstructure:"updated"`
-	Destroyed []interface{}          `mapstructure:"destroyed"`
-	NewState  interface{}            `mapstructure:"newState"`
-	OldState  interface{}            `mapstructure:"oldState"`
+	AccountID string                 `mapstructure:"accountId" json:"accountId,omitempty"`
+	Created   map[string]MaskedEmail `mapstructure:"created" json:"created,omitempty"`
+	Updated   map[string]interface{} `mapstructure:"updated" json:"updated,omitempty"`
+	Destroyed []interface{}          `mapstructure:"destroyed" json:"destroyed,omitempty"`
+	NewState  interface{}            `mapstructure:"newState" json:"newState,omitempty"`
+	OldState  interface{}            `mapstructure:"oldState" json:"oldState,omitempty"`
 }
 
 func (m *MethodResponseMaskedEmailSet) GetCreatedItem() (MaskedEmail, error) {

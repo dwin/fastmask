@@ -2,6 +2,8 @@ package fastmail
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 
 	"github.com/go-resty/resty/v2"
 )
@@ -37,8 +39,21 @@ type Credentials struct {
 // Returns NewClient with the given values. 'accountID' is the Fastmail account ID, this is
 // not the same as the email address.
 func NewClient(appName string) *Client {
+	httpC := resty.New()
+	httpC.OnAfterResponse(func(c *resty.Client, r *resty.Response) error {
+		if r.StatusCode() == http.StatusOK || r.StatusCode() == http.StatusCreated {
+			return nil
+		}
+
+		if r.StatusCode() == http.StatusUnauthorized {
+			return ErrUnauthorized
+		}
+
+		return APIError{Msg: "unexpected response", Code: r.StatusCode(), Status: r.Status(), Detail: r.String()}
+	})
+
 	return &Client{
-		httpC: resty.New().SetBaseURL(APIEndpoint),
+		httpC: httpC,
 		config: &ClientConfig{
 			AppName:    appName,
 			APIBaseURL: APIEndpoint,
@@ -64,8 +79,8 @@ func (c *Client) sendRequest(ctx context.Context, r *JMAPRequest) (*JMAPResponse
 	request.SetContext(ctx)
 	request.SetResult(&JMAPResponse)
 
-	if resp, err := request.Post(c.config.APIBaseURL); err != nil {
-		return nil, APIError{Msg: "request failed", Status: resp.Status(), Detail: resp.String()}
+	if _, err := request.Post(c.config.APIBaseURL); err != nil {
+		return nil, fmt.Errorf("request failed: %w", err)
 	}
 
 	return &JMAPResponse, nil

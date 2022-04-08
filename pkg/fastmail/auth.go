@@ -91,8 +91,8 @@ func (c *Client) LoginUsernamePasswordMFA(ctx context.Context, username, passwor
 	loginIDRequest.SetContext(ctx)
 	loginIDRequest.SetResult(&loginIDResult)
 
-	if resp, err := loginIDRequest.Post(APIAuthEndpoint); err != nil {
-		return nil, APIError{Msg: "get loginID failed", Status: resp.Status(), Detail: resp.String()}
+	if _, err := loginIDRequest.Post(APIAuthEndpoint); err != nil {
+		return nil, fmt.Errorf("get loginID failed: %w", err)
 	}
 
 	// Send Password
@@ -110,7 +110,7 @@ func (c *Client) LoginUsernamePasswordMFA(ctx context.Context, username, passwor
 
 	resp, err := passwordAuthRequest.Post(APIAuthEndpoint)
 	if err != nil {
-		return nil, APIError{Msg: "password auth failed", Status: resp.Status(), Detail: resp.String()}
+		return nil, fmt.Errorf("password auth failed: %w", err)
 	}
 
 	// If access token is received then we are authenticated, otherwise check for MFA requirement.
@@ -141,8 +141,8 @@ func (c *Client) LoginUsernamePasswordMFA(ctx context.Context, username, passwor
 		mfaAuthRequest.SetContext(ctx)
 		mfaAuthRequest.SetResult(&authResponse)
 
-		if resp, err := mfaAuthRequest.Post(APIAuthEndpoint); err != nil {
-			return nil, APIError{Msg: "mfa auth failed", Status: resp.Status(), Detail: resp.String()}
+		if _, err := mfaAuthRequest.Post(APIAuthEndpoint); err != nil {
+			return nil, fmt.Errorf("mfa auth failed: %w", err)
 		}
 	}
 

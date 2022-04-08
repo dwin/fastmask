@@ -1,3 +1,4 @@
 example_data/
 dist/
 coverage.out
+*.DS_Store

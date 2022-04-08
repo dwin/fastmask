@@ -1,0 +1,156 @@
+{
+  "uploadUrl": "https://api.fastmail.com/jmap/upload/{accountId}/",
+  "displayName": "John Doe",
+  "experiments": {},
+  "showAllExpired": false,
+  "isAdmin": true,
+  "isReseller": false,
+  "mayCalendarSync": true,
+  "showAdminsExpired": false,
+  "signingId": "Bor7TrV0Vrgk5G53j7XgZe86V8s81K5X",
+  "proxyUrl": "https://www.fastmailusercontent.com/jmap/proxy/{url}/{name}",
+  "apiUrl": "https://api.fastmail.com/jmap/api/",
+  "sessionKey": "Jvt2X9yyQsG7qSgQjNPxWsJp0ppVK7b5",
+  "interestCohort": null,
+  "signingKey": "gLNt535HdTO4Mf7vsuPeM1l3HIIW0DsSwG8DEx2Vual",
+  "mayContactSync": true,
+  "username": "nobody@fastmail.com",
+  "isStaff": false,
+  "isLoginBlocked": false,
+  "isAppStore": false,
+  "isReceiveBlocked": false,
+  "downloadUrl": "https://www.fastmailusercontent.com/jmap/download/{accountId}/{blobId}/{name}?type={type}",
+  "eventSourceUrl": "https://api.fastmail.com/jmap/event/",
+  "primaryAccounts": {
+    "urn:ietf:params:jmap:submission": "z3U9VLb8H",
+    "urn:ietf:params:jmap:calendars": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/customer": "WRHkVYpFD",
+    "https://www.fastmail.com/dev/notes": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/mail": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/files": "vb4a8415a",
+    "urn:ietf:params:jmap:principals": "WRHkVYpFD",
+    "https://www.fastmail.com/dev/user": "z3U9VLb8H",
+    "urn:ietf:params:jmap:contacts": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/calendars": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/rules": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/backup": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/blob": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/performance": "z3U9VLb8H",
+    "urn:ietf:params:jmap:mail": "z3U9VLb8H",
+    "https://www.fastmail.com/dev/contacts": "z3U9VLb8H",
+    "urn:ietf:params:jmap:vacationresponse": "z3U9VLb8H"
+  },
+  "accessToken": "fmb1-testtest-mv6PnlZnjmuB57v7ywfmxHM47NTiQyqN-bKhQxhpmPr-l7A2DI4DPm0Etn3ltjT7IiUnWJHtc0mv",
+  "capabilities": {
+    "https://www.fastmail.com/dev/user": {},
+    "https://www.fastmail.com/dev/files": {},
+    "urn:ietf:params:jmap:principals": {},
+    "https://www.fastmail.com/dev/mail": {},
+    "https://www.fastmail.com/dev/compress": { "deflate": true },
+    "https://www.fastmail.com/dev/notes": {},
+    "https://www.fastmail.com/dev/customer": {},
+    "urn:ietf:params:jmap:core": {
+      "maxConcurrentUpload": 10,
+      "maxCallsInRequest": 50,
+      "maxObjectsInSet": 4096,
+      "maxSizeUpload": 250000000,
+      "maxConcurrentRequests": 10,
+      "maxSizeRequest": 10000000,
+      "maxObjectsInGet": 4096,
+      "collationAlgorithms": ["i;ascii-numeric", "i;ascii-casemap", "i;octet"]
+    },
+    "urn:ietf:params:jmap:calendars": { "isRFC": true },
+    "urn:ietf:params:jmap:submission": {},
+    "https://www.fastmail.com/dev/performance": {},
+    "urn:ietf:params:jmap:vacationresponse": {},
+    "https://www.fastmail.com/dev/contacts": {},
+    "urn:ietf:params:jmap:mail": {},
+    "https://www.fastmail.com/dev/blob": {},
+    "https://www.fastmail.com/dev/backup": {},
+    "https://www.fastmail.com/dev/rules": {},
+    "urn:ietf:params:jmap:contacts": {},
+    "https://www.fastmail.com/dev/calendars": {}
+  },
+  "state": "cyrus-0;p-19;vfs-0",
+  "isSendBlocked": false,
+  "accountType": "personal",
+  "mayMailSync": true,
+  "newCalAlerts": true,
+  "isVerified": true,
+  "trialDaysRemaining": -1,
+  "accounts": {
+    "vb4a8415a": {
+      "isReadOnly": false,
+      "isPersonal": true,
+      "isArchiveUser": false,
+      "name": "nobody@fastmail.com",
+      "userId": "user-12345678",
+      "accountCapabilities": {
+        "urn:ietf:params:jmap:principals:owner": {
+          "principalId": "user-12345678",
+          "accountIdForPrincipal": "WRHkVYpFD"
+        },
+        "https://www.fastmail.com/dev/files": {}
+      }
+    },
+    "z3U9VLb8H": {
+      "userId": "user-12345678",
+      "name": "nobody@fastmail.com",
+      "accountCapabilities": {
+        "https://www.fastmail.com/dev/blob": {},
+        "urn:ietf:params:jmap:vacationresponse": {},
+        "urn:ietf:params:jmap:mail": {
+          "mayCreateTopLevelMailbox": true,
+          "maxSizeAttachmentsPerEmail": 50000000,
+          "maxMailboxesPerEmail": 1000,
+          "maxMailboxDepth": null,
+          "maxSizeMailboxName": 490,
+          "emailQuerySortOptions": [
+            "receivedAt",
+            "from",
+            "to",
+            "subject",
+            "size",
+            "header.x-spam-score"
+          ]
+        },
+        "https://www.fastmail.com/dev/contacts": {},
+        "https://www.fastmail.com/dev/performance": {},
+        "urn:ietf:params:jmap:contacts": {},
+        "https://www.fastmail.com/dev/calendars": {},
+        "https://www.fastmail.com/dev/rules": { "rulesVersion": 3 },
+        "https://www.fastmail.com/dev/backup": {},
+        "https://www.fastmail.com/dev/mail": {},
+        "urn:ietf:params:jmap:principals:owner": {
+          "accountIdForPrincipal": "WRHkVYpFD",
+          "principalId": "user-12345678"
+        },
+        "https://www.fastmail.com/dev/user": {},
+        "urn:ietf:params:jmap:submission": {
+          "submissionExtensions": [],
+          "maxDelayedSend": 44236800
+        },
+        "urn:ietf:params:jmap:calendars": {},
+        "https://www.fastmail.com/dev/notes": {}
+      },
+      "isPersonal": true,
+      "isReadOnly": false,
+      "isArchiveUser": false
+    },
+    "WRHkVYpFD": {
+      "accountCapabilities": {
+        "urn:ietf:params:jmap:principals": {
+          "currentUserPrincipalId": "user-12345678"
+        },
+        "https://www.fastmail.com/dev/customer": {}
+      },
+      "isPersonal": false,
+      "isReadOnly": false
+    }
+  },
+  "language": "en",
+  "featureLevel": 3,
+  "isFreeAccount": false,
+  "userId": "b4a8415a",
+  "trialExpiresAt": null
+}

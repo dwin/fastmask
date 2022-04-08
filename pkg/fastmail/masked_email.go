@@ -7,6 +7,19 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+// MaskedEmail represents a Fastmail masked email.
+type MaskedEmail struct {
+	ID            string `json:"id,omitempty" mapstructure:"id"`
+	State         string `json:"state,omitempty" mapstructure:"state"`
+	Email         string `json:"email,omitempty" mapstructure:"email"`
+	Description   string `json:"description,omitempty" mapstructure:"description"`
+	ForDomain     string `json:"forDomain,omitempty" mapstructure:"forDomain"`
+	URL           string `json:"url,omitempty" mapstructure:"url"`
+	CreatedBy     string `json:"createdBy,omitempty" mapstructure:"createdBy"`
+	CreatedAt     string `json:"createdAt,omitempty" mapstructure:"createdAt"`
+	LastMessageAt string `json:"lastMessageAt,omitempty" mapstructure:"lastMessageAt"`
+}
+
 // MaskedEmailPayload is the payload for the MaskedEmail/{set,update} method.
 type MaskedEmailPayload struct {
 	AccountID string                  `json:"accountId,omitempty"`
