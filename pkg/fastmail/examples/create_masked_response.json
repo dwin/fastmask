@@ -1,0 +1,27 @@
+{
+  "latestClientVersion": "00f1033b1c600000",
+  "methodResponses": [
+    [
+      "MaskedEmail/set",
+      {
+        "oldState": null,
+        "newState": null,
+        "updated": {},
+        "created": {
+          "k1448": {
+            "id": "masked-12345678",
+            "createdBy": "",
+            "lastMessageAt": null,
+            "createdAt": "2022-04-20T12:00:00Z",
+            "forDomain": "",
+            "email": "test.example1234@fastmail.com"
+          }
+        },
+        "accountId": "abc123",
+        "destroyed": []
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "april-0;p-19;vfs-0"
+}
