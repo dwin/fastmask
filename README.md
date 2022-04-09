@@ -1,6 +1,6 @@
 # fastmask
 
-Quickly create [Fastmail](https://fastmail.com) Masked Email addresses. It includes a client package for use in other apps in addition to the CLI.
+Quickly create [Fastmail](https://fastmail.com) Masked Email addresses. It includes a client package for use in other projects in addition to the CLI.
 
 >**What is Fastmail Masked Email ?**
 >
@@ -13,12 +13,16 @@ Quickly create [Fastmail](https://fastmail.com) Masked Email addresses. It inclu
 > More info: [https://www.fastmail.help/hc/en-us/articles/4406536368911-Masked-Email](https://www.fastmail.help/hc/en-us/articles/4406536368911-Masked-Email)
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/dwin/fastmask.svg)](https://pkg.go.dev/github.com/dwin/fastmask)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/dwin/fastmask)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dwin/fastmask)](https://goreportcard.com/report/github.com/dwin/fastmask)
 [![codecov](https://codecov.io/gh/dwin/fastmask/branch/main/graph/badge.svg?token=Co4xYYdgVV)](https://codecov.io/gh/dwin/fastmask)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/dwin/fastmask/main)
 
 ## Installation
 
-Get the latest release from [https://github.com/dwin/fastmask/releases](https://github.com/dwin/fastmask/releases) or:
+Get the latest releases for Linux, macOS(darwin) or Windows for armv6, armv7, arm64 and x86_64 architectures from:
+
+[https://github.com/dwin/fastmask/releases](https://github.com/dwin/fastmask/releases) or:
 
 ```bash
 go get -u github.com/dwin/fastmask
@@ -43,9 +47,9 @@ _MFA code is required only if enabled for your account **(it should be)**._
 ### Go Package
 
 ```go
-import "github.com/dwin/fastmask"
+import "github.com/dwin/fastmask/pkg/fastmail"
 
-client := fastmask.NewClient("your-app-name")
+client := fastmail.NewClient("your-app-name")
 ```
 
 ## License
