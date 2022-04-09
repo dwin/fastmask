@@ -25,11 +25,11 @@ builds:
       - '7'
 
 universal_binaries:
-- replace: true
+- replace: false
 
 archives:
   - replacements:
-      darwin: Darwin
+      darwin: MacOS
       linux: Linux
       windows: Windows
       amd64: x86_64
