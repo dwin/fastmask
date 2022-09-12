@@ -18,6 +18,8 @@ Quickly create [Fastmail](https://fastmail.com) Masked Email addresses. It inclu
 [![codecov](https://codecov.io/gh/dwin/fastmask/branch/main/graph/badge.svg?token=Co4xYYdgVV)](https://codecov.io/gh/dwin/fastmask)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/dwin/fastmask/main)
 
+[Disclaimer](docs/Disclaimer.md) | [Privacy Policy](docs/Privacy_Policy.md) | [Terms of Service](docs/Terms_of_Service.md) | [Support](docs/Support.md)
+
 ## Installation
 
 Get the latest releases for Linux, macOS(darwin) or Windows for armv6, armv7, arm64 and x86_64 architectures from:
